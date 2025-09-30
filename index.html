@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bro.stok - Manajemen Stok</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <p>Manajemen Stok yang Mudah</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Masuk</button>
+                
+                <div class="login-footer">
+                    <p>Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="registerScreen" class="screen">
+        <div class="register-container">
+            <div class="register-header">
+                <button class="btn-back" id="backToLogin">
+                    <span class="material-icons">arrow_back</span>
+                </button>
+                <h2>Daftar Akun Baru</h2>
+            </div>
+            
+            <form class="register-form" id="registerForm">
+                <div class="input-group">
+                    <label for="regName">Nama Lengkap</label>
+                    <input type="text" id="regName" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" required minlength="6">
+                </div>
+                
+                <div class="input-group">
+                    <label for="regConfirmPassword">Konfirmasi Password</label>
+                    <input type="password" id="regConfirmPassword" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="regRole">Peran</label>
+                    <select id="regRole" required>
+                        <option value="">Pilih peran</option>
+                        <option value="admin">Admin/Manager</option>
+                        <option value="operator">Staff/Operator</option>
+                        <option value="owner">Pemilik Bisnis</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Daftar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" id="notificationsBtn">
+                        <span class="material-icons">notifications</span>
+                        <span class="badge" id="notificationBadge">3</span>
+                    </button>
+                    <button class="btn-icon" id="profileBtn">
+                        <span class="material-icons">account_circle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-screen="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-screen="products">
+                    <span class="material-icons">inventory</span>
+                    <span>Produk</span>
+                </button>
+                <button class="nav-item" data-screen="stock">
+                    <span class="material-icons">add_box</span>
+                    <span>Stok</span>
+                </button>
+                <button class="nav-item" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>Riwayat</span>
+                </button>
+                <button class="nav-item" data-screen="settings">
+                    <span class="material-icons">settings</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <div class="content-screen active">
+                <div class="screen-header">
+                    <h2>Dashboard</h2>
+                    <p>Ringkasan stok Anda</p>
+                </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <span class="material-icons">inventory</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalProducts">0</h3>
+                        <p>Total Produk</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <span class="material-icons">category</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalVariants">0</h3>
+                        <p>Total Varian</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <span class="material-icons">warning</span>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="lowStockCount">0</h3>
+                        <p>Stok Rendah</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <h3>Stok Rendah</h3>
+                    <button class="btn btn-text">Lihat Semua</button>
+                </div>
+                <div class="low-stock-list" id="lowStockList">
+                    <!-- Low stock items will be populated here -->
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-header">
+                    <h3>Quick Actions</h3>
+                </div>
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-action="stock-in">
+                        <span class="material-icons">add</span>
+                        <span>Stok Masuk</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="stock-out">
+                        <span class="material-icons">remove</span>
+                        <span>Stok Keluar</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="add-product">
+                        <span class="material-icons">add_box</span>
+                        <span>Tambah Produk</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        </main>
+    </div>
+
+    <!-- Products Screen -->
+    <div id="productsScreen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" id="notificationsBtn2">
+                        <span class="material-icons">notifications</span>
+                        <span class="badge" id="notificationBadge2">3</span>
+                    </button>
+                    <button class="btn-icon" id="profileBtn2">
+                        <span class="material-icons">account_circle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item" data-screen="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item active" data-screen="products">
+                    <span class="material-icons">inventory</span>
+                    <span>Produk</span>
+                </button>
+                <button class="nav-item" data-screen="stock">
+                    <span class="material-icons">add_box</span>
+                    <span>Stok</span>
+                </button>
+                <button class="nav-item" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>Riwayat</span>
+                </button>
+                <button class="nav-item" data-screen="settings">
+                    <span class="material-icons">settings</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <!-- Products Content -->
+            <div class="content-screen active">
+                <div class="screen-header">
+                    <h2>Produk</h2>
+                    <button class="btn btn-primary" id="addProductBtn">
+                        <span class="material-icons">add</span>
+                        Tambah Produk
+                    </button>
+                </div>
+                
+                <div class="search-bar">
+                    <div class="search-input">
+                        <span class="material-icons">search</span>
+                        <input type="text" placeholder="Cari produk..." id="productSearch">
+                    </div>
+                    <button class="btn btn-outline" id="filterBtn">
+                        <span class="material-icons">filter_list</span>
+                    </button>
+                </div>
+                
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Stock Screen -->
+    <div id="stockScreen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" id="notificationsBtn3">
+                        <span class="material-icons">notifications</span>
+                        <span class="badge" id="notificationBadge3">3</span>
+                    </button>
+                    <button class="btn-icon" id="profileBtn3">
+                        <span class="material-icons">account_circle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item" data-screen="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-screen="products">
+                    <span class="material-icons">inventory</span>
+                    <span>Produk</span>
+                </button>
+                <button class="nav-item active" data-screen="stock">
+                    <span class="material-icons">add_box</span>
+                    <span>Stok</span>
+                </button>
+                <button class="nav-item" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>Riwayat</span>
+                </button>
+                <button class="nav-item" data-screen="settings">
+                    <span class="material-icons">settings</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <!-- Stock Content -->
+            <div class="content-screen active">
+                <div class="screen-header">
+                    <h2>Operasi Stok</h2>
+                </div>
+                
+                <div class="stock-actions">
+                    <button class="stock-action-btn" data-type="in">
+                        <span class="material-icons">add_circle</span>
+                        <h3>Stok Masuk</h3>
+                        <p>Tambah stok produk</p>
+                    </button>
+                    
+                    <button class="stock-action-btn" data-type="out">
+                        <span class="material-icons">remove_circle</span>
+                        <h3>Stok Keluar</h3>
+                        <p>Kurangi stok produk</p>
+                    </button>
+                    
+                    <button class="stock-action-btn" data-type="adjust">
+                        <span class="material-icons">edit</span>
+                        <h3>Penyesuaian</h3>
+                        <p>Atur ulang stok</p>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- History Screen -->
+    <div id="historyScreen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" id="notificationsBtn4">
+                        <span class="material-icons">notifications</span>
+                        <span class="badge" id="notificationBadge4">3</span>
+                    </button>
+                    <button class="btn-icon" id="profileBtn4">
+                        <span class="material-icons">account_circle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item" data-screen="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-screen="products">
+                    <span class="material-icons">inventory</span>
+                    <span>Produk</span>
+                </button>
+                <button class="nav-item" data-screen="stock">
+                    <span class="material-icons">add_box</span>
+                    <span>Stok</span>
+                </button>
+                <button class="nav-item active" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>Riwayat</span>
+                </button>
+                <button class="nav-item" data-screen="settings">
+                    <span class="material-icons">settings</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <!-- History Content -->
+            <div class="content-screen active">
+                <div class="screen-header">
+                    <h2>Riwayat Stok</h2>
+                    <button class="btn btn-outline" id="exportBtn">
+                        <span class="material-icons">download</span>
+                        Ekspor
+                    </button>
+                </div>
+                
+                <div class="filter-bar">
+                    <select id="operationFilter">
+                        <option value="">Semua Operasi</option>
+                        <option value="in">Stok Masuk</option>
+                        <option value="out">Stok Keluar</option>
+                        <option value="adjust">Penyesuaian</option>
+                    </select>
+                    
+                    <input type="date" id="dateFrom" placeholder="Dari">
+                    <input type="date" id="dateTo" placeholder="Sampai">
+                    
+                    <button class="btn btn-primary" id="applyFilter">Terapkan</button>
+                </div>
+                
+                <div class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settingsScreen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <span class="material-icons">inventory_2</span>
+                    <h1>bro.stok</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn-icon" id="notificationsBtn5">
+                        <span class="material-icons">notifications</span>
+                        <span class="badge" id="notificationBadge5">3</span>
+                    </button>
+                    <button class="btn-icon" id="profileBtn5">
+                        <span class="material-icons">account_circle</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item" data-screen="dashboard">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-screen="products">
+                    <span class="material-icons">inventory</span>
+                    <span>Produk</span>
+                </button>
+                <button class="nav-item" data-screen="stock">
+                    <span class="material-icons">add_box</span>
+                    <span>Stok</span>
+                </button>
+                <button class="nav-item" data-screen="history">
+                    <span class="material-icons">history</span>
+                    <span>Riwayat</span>
+                </button>
+                <button class="nav-item active" data-screen="settings">
+                    <span class="material-icons">settings</span>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+
+            <!-- Settings Content -->
+            <div class="content-screen active">
+                <div class="screen-header">
+                    <h2>Pengaturan</h2>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Stok Rendah</h3>
+                    <div class="setting-item">
+                        <label for="lowStockThreshold">Threshold Stok Rendah</label>
+                        <input type="number" id="lowStockThreshold" value="10" min="1">
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Akun</h3>
+                    <div class="setting-item">
+                        <button class="btn btn-outline" id="logoutBtn">
+                            <span class="material-icons">logout</span>
+                            Keluar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay">
+        <!-- Add Product Modal -->
+        <div id="addProductModal" class="modal">
+            <div class="modal-header">
+                <h3>Tambah Produk</h3>
+                <button class="btn-close" data-modal="addProductModal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="addProductForm">
+                    <div class="input-group">
+                        <label for="productName">Nama Produk</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="productBrand">Brand</label>
+                        <input type="text" id="productBrand" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="productImage">Gambar Produk</label>
+                        <input type="file" id="productImage" accept="image/*">
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" data-modal="addProductModal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Stock Operation Modal -->
+        <div id="stockModal" class="modal">
+            <div class="modal-header">
+                <h3 id="stockModalTitle">Operasi Stok</h3>
+                <button class="btn-close" data-modal="stockModal">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="stockForm">
+                    <div class="input-group">
+                        <label for="stockVariant">Pilih Varian</label>
+                        <select id="stockVariant" required>
+                            <option value="">Pilih varian</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="stockQuantity">Jumlah</label>
+                        <input type="number" id="stockQuantity" required min="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="stockNotes">Catatan (Opsional)</label>
+                        <textarea id="stockNotes" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" data-modal="stockModal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Proses</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
